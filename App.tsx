@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 // تأكد من إضافة مكتبة html2pdf.js للمشروع
 import html2pdf from 'html2pdf.js';
 
