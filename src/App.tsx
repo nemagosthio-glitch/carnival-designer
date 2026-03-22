@@ -19,8 +19,7 @@ export default function App() {
     results: { titles: '', opening: '', script: '', game: '', decor: '' }
   });
 
-  const API_KEY = AIzaSyDRiD-q4xvxdjjCsFtXbqXcZRTw1WlD1QI ;
-
+ const API_KEY = "AIzaSyDRiD-q4xvxdjjCsFtXbqXcZRTw1WlD1QI";
   const askGemini = async (prompt: string, targetKey: string) => {
     setLoading(true);
     try {
