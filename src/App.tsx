@@ -24,7 +24,7 @@ const API_KEY = "AIzaSyDRiD-q4xvxdjjCsFtXbqXcZRTw1WlD1QI";
 const askGemini = async (prompt: string, targetKey: string) => {
     setLoading(true);
     try {
-       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`, {
+       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-latest:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
