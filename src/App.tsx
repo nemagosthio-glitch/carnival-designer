@@ -24,39 +24,32 @@ const API_KEY = "AIzaSyCVHu-p0Jr8Z2F_yWbmE5WcvvyZUNHqSOU";
 const askGemini = async (prompt: string, targetKey: string) => {
     setLoading(true);
     try {
+        // الرابط ده هو الوحيد اللي شغال دلوقتي مع الموديل ده
         const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            })
         });
         
         const resData = await response.json();
         
         if (resData.error) {
+            // لو طلع خطأ هيقولك سببه إيه بالظبط (غالباً هيكون بسبب الـ API Key لو لسه فيه مشكلة)
             alert(`خطأ من جوجل: ${resData.error.message}`);
         } else if (resData.candidates && resData.candidates[0].content.parts[0].text) {
             const text = resData.candidates[0].content.parts[0].text;
             setData(prev => ({ ...prev, results: { ...prev.results, [targetKey]: text } }));
         }
     } catch (e) {
-        alert("فشل الاتصال.. تأكد من الإنترنت");
+        alert("فشل الاتصال.. تأكد من جدار الحماية أو الإنترنت");
     }
     setLoading(false);
 };
   
-  // دالة تصدير الـ PDF التي تحافظ على التنسيق واللغة العربية
-  const downloadPDF = () => {
-    const element = document.getElementById('full-carnival-content');
-    const opt = {
-      margin: 5,
-      filename: `كرنفال_${data.name || 'خادم_جيمناي'}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-  };
-
   return (
     <div dir="rtl" style={{ backgroundColor: '#fdf3e7', minHeight: '100vh', padding: '20px', fontFamily: 'Arial', textAlign: 'right' }}>
       
