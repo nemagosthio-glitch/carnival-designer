@@ -24,8 +24,7 @@ const API_KEY = "AIzaSyCVHu-p0Jr8Z2F_yWbmE5WcvvyZUNHqSOU";
 const askGemini = async (prompt: string, targetKey: string) => {
     setLoading(true);
     try {
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-        method: 'POST',
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -33,21 +32,18 @@ const askGemini = async (prompt: string, targetKey: string) => {
         
         const resData = await response.json();
         
-        // كود الفحص: لو السيرفر بعت خطأ هيظهر لك هنا بالتفصيل
         if (resData.error) {
             alert(`خطأ من جوجل: ${resData.error.message}`);
-            setLoading(false);
-            return;
+        } else if (resData.candidates && resData.candidates[0].content.parts[0].text) {
+            const text = resData.candidates[0].content.parts[0].text;
+            setData(prev => ({ ...prev, results: { ...prev.results, [targetKey]: text } }));
         }
-
-        const text = resData.candidates[0].content.parts[0].text;
-        setData(prev => ({ ...prev, results: { ...prev.results, [targetKey]: text } }));
     } catch (e) {
-        alert("فشل الاتصال بالإنترنت أو المتصفح منع الإرسال");
+        alert("فشل الاتصال.. تأكد من الإنترنت");
     }
     setLoading(false);
 };
-
+  
   // دالة تصدير الـ PDF التي تحافظ على التنسيق واللغة العربية
   const downloadPDF = () => {
     const element = document.getElementById('full-carnival-content');
